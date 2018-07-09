@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.LeaveDao">
+    <select id="getAllleave" resultType="com.stylefeng.guns.common.persistence.model.LeaveGhl">
+        select id,name,phone,start_time,end_time,remark, case when pass='0' then '未通过' when pass='1' then '老鸟通过' when pass='2' then '超级管理员通过'  end as pass from leave_ghl
+    <if test="name!=null and name!=''">
+         WHERE name LIKE '%${name}%'
+    </if>
+    </select>
+    
+    <insert id="addLeave" parameterType="com.stylefeng.guns.common.persistence.model.LeaveGhl">
+        <selectKey keyProperty="id" order="AFTER" resultType="int">
+            select LAST_INSERT_ID()
+        </selectKey>
+        insert into leave_ghl (name,phone,start_time,end_time,remark) VALUES (#{name},#{phone},#{startTime},#{endTime},#{remark})
+    </insert>
+
+    <select id="findByid" resultType="com.stylefeng.guns.common.persistence.model.LeaveGhl">
+        SELECT  * from leave_ghl where id=#{0}
+    </select>
+
+    <insert id="addDecision">
+        INSERT INTO
+        <choose>
+            <when test="context!=null and context!=''">
+                decision_leave (context,state,l_id,person) VALUES (#{context},#{state},#{lid},#{person})
+            </when>
+            <otherwise>
+                decision_leave (context,state,l_id,person) VALUES ('无',#{state},#{lid},#{person})
+            </otherwise>
+        </choose>
+    </insert>
+
+    <update id="updLeavestate" >
+         UPDATE leave_ghl SET pass=#{state} where id=#{id}
+    </update>
+
+    <select id="getUserforLeaveId" resultType="com.stylefeng.guns.common.persistence.model.User">
+        SELECT * from user where account=(SELECT name from leave_ghl where id=#{id})
+    </select>
+
+    <select id="getUserforId" resultType="com.stylefeng.guns.common.persistence.model.User">
+        SELECT * FROM user WHERE id=#{id}
+    </select>
+
+    <select id="getDecsForid" resultType="com.stylefeng.guns.common.persistence.model.DecisionLeave">
+        SELECT * FROM decision_leave WHERE l_id=#{id}
+    </select>
+
+    <select id="getDesforName" resultType="com.stylefeng.guns.common.persistence.model.LeaveGhl">
+        SELECT * FROM leave_ghl WHERE NAME = #{name}
+    </select>
+
+    <delete id="delMyslefLeaveforId">
+        DELETE FROM leave_ghl WHERE id=#{id}
+    </delete>
+
+    <select id="getJson" resultType="string">
+        SELECT DISTINCT name from leave_ghl WHERE name like '%${name}%'
+    </select>
+
+    <insert id="uploadFiles" parameterType="com.stylefeng.guns.common.persistence.model.FileUploadSpy">
+        INSERT  INTO file_upload_spy (file_name,file_url,upload_time)
+        VALUES
+        <foreach collection ="list" item="files" separator =",">
+            (#{files.fileName},#{files.fileUrl},#{files.uploadTime})
+        </foreach >
+    </insert>
+
+    <select id="findOrbyid" resultType="com.stylefeng.guns.common.persistence.model.FileUploadSpy">
+        SELECT * FROM file_upload_spy WHERE id=#{id}
+    </select>
+
+    <select id="getAllfiles" resultType="com.stylefeng.guns.common.persistence.model.FileUploadSpy">
+        SELECT * FROM file_upload_spy
+    </select>
+
+    <select id="diGui" resultType="com.stylefeng.guns.common.persistence.model.Module">
+        select * from modules;
+    </select>
+</mapper>

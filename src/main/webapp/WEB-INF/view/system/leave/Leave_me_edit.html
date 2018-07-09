@@ -1,0 +1,23 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins" xmlns:c="http://www.w3.org/1999/html">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+            @for(treelist in TreeList){
+                @if(treelist.childList!=""){
+                    根节点节点:${treelist.name}<br>
+                        @for(parentNode in treelist.childList){
+                            @if(parentNode.childList!=""){
+                                父节点节点:${parentNode.name}<br>
+                            @}
+                            @for(childer in parentNode.childList){
+                                子节点:${childer.name}<br>
+                            @}
+                        @}
+                @}
+            @}
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/leave/Leave_info.js"></script>
+@}

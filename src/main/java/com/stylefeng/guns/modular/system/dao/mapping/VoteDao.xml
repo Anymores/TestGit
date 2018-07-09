@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.stylefeng.guns.modular.system.dao.VoteDao">
+
+    <select id="getAllvote" resultType="com.stylefeng.guns.common.persistence.model.VoteSpy">
+        SELECT * from Vote_spy
+    </select>
+
+    <select id="getAllip" resultType="string">
+        SELECT ip from vote_det_spy
+    </select>
+
+    <insert id="goVote">
+      INSERT INTO vote_det_spy (v_id,ip,time) VALUES (#{id},#{ip},#{time})
+    </insert>
+
+    <update id="addVotes">
+      UPDATE vote_spy SET num = num+1 WHERE id=#{id}
+    </update>
+</mapper>

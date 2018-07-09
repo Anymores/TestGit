@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ECharts</title>
+    <!-- 引入 echarts.js -->
+    <script src="${ctxPath}/static/js/echarts.min.js"></script>
+    <link href="${ctxPath}/static/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>
+    <script src="${ctxPath}/static/js/bootstrap.min.js?v=3.3.6"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<input type="button" onclick="backVote()" class="btn btn-info" value="返回投票" /><br>
+<div id="main" style="width: 600px;height:400px;">
+
+</div>
+<script type="text/javascript">
+    
+    function backVote(){
+        window.location="/Vote";
+    }
+    
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+/*    var option = {
+        title: {
+            text: '放假意向投票展示'
+        },
+        tooltip: {},
+        legend: {
+            data:['人数']
+        },
+        xAxis: {
+            data: 'category',
+        },
+        yAxis: {
+            type : 'value'
+        },
+        series: [{
+            name: '人数',
+            type: 'bar',
+        }]
+    };*/
+
+
+    option = {
+        xAxis: {
+            type: 'category',
+            data: 'category'
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: 'bar',
+            type: 'line'
+        }]
+    };
+
+
+
+
+    loadDATA(option);
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+    function loadDATA(option){
+        $.ajax({
+            type : "post",
+            async : false, //同步执行
+            url : "/Vote/getvotes",
+            data : {},
+            dataType : "json", //返回数据形式为json
+            success : function(result) {
+                if (result) {
+                    //初始化option.xAxis[0]中的data
+                    option.xAxis.data=[];
+                    for(var i=0;i<result.length;i++){
+                        option.xAxis.data.push(result[i].name);
+                    }
+                    //初始化option.series[0]中的data
+                    option.series[0].data=[];
+                    for(var i=0;i<result.length;i++){
+                        option.series[0].data.push(result[i].num);
+                    }
+                }
+            }
+        });
+    }
+
+</script>
+
+
+</body>
+</html>

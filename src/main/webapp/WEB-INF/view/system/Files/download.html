@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="${ctxPath}/static/js/jquery.min.js?v=2.1.4"></script>
+<body>
+@for(files in filelist){
+${filesLP.index}-文件名:${files.fileName}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;上传日期:${files.uploadTime,dateFormat="yyyy-MM-dd HH:mm:ss"}
+<input type="button" value="下载" onclick="download('${files.id}')"><br>
+----------------------------------------------------------------------------------------------------<br>
+
+@}
+</body>
+<script>
+    function download(id) {
+        window.location="/Files/download?id="+id;
+    }
+</script>
+</html>

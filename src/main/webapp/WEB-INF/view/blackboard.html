@@ -1,0 +1,61 @@
+@layout("/common/_container.html"){
+    <link rel="stylesheet" href="${ctxPath}/static/css/styles/main.css" type="text/css" />
+    <link rel="stylesheet" href="${ctxPath}/static/css/styles/index.css" type="text/css" />
+<div class="container-fluid" style="padding: 0 !important;">
+	<div class="row">
+		<script>
+            $(function(){
+                var len = $(".num > li").length;
+                var index = 0;
+                var adTimer;
+                $(".num li").mouseover(function(){
+                    index=$(".num li").index(this);
+                    showImg(index);
+                }).eq(0).mouseover();
+                $('.ad').hover(function(){
+                    clearInterval(adTimer);
+                },function(){
+                    adTimer=setInterval(function(){
+                        showImg(index);
+                        index++;
+                        if(index==len){index=0;}
+                    },2000);
+                }).trigger("mouseleave");
+            })
+            function showImg(index){
+                var adHeight=$(".content_right .ad").height();
+                $(".slider").stop(true,false).animate({top: -adHeight*index},1000);
+                $(".num li").removeClass("on").eq(index).addClass("on");
+            }
+		</script>
+
+		<div class="content_right" style="align-content: center	">
+			<div class="ad" >
+				<ul class="slider" >
+					<li><img src="${ctxPath}/static/img/ads/1.gif"/></li>
+					<li><img src="${ctxPath}/static/img/ads/2.gif"/></li>
+					<li><img src="${ctxPath}/static/img/ads/3.gif"/></li>
+					<li><img src="${ctxPath}/static/img/ads/4.gif"/></li>
+					<li><img src="${ctxPath}/static/img/ads/5.gif"/></li>
+				</ul>
+				<ul class="num" >
+					<li>1</li>
+					<li>2</li>
+					<li>3</li>
+					<li>4</li>
+					<li>5</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="col-sm-12">
+			@for(notice in noticeList){
+				<div class="alert alert-success alert-dismissable">
+					<button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+					${notice.content}
+				</div>
+			@}
+		</div>
+	</div>
+</div>
+@}

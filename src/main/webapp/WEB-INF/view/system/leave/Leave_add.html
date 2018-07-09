@@ -1,0 +1,35 @@
+@layout("/common/_container.html"){
+<div class="ibox float-e-margins">
+    <div class="ibox-content">
+        <div class="form-horizontal">
+
+            <input type="hidden" id="id" value="">
+
+            <div class="row">
+                <div class="col-sm-6 b-r">
+                    <#input id="beginTime" name="开始时间" underline="true"
+                    clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})"/>
+
+                    <#input id="lastTime" name="结束时间" underline="true"
+                    clickFun="laydate({istime: false, format: 'YYYY-MM-DD'})"/>
+
+                    <#input id="remark" name="请假原因"  underline="true" />
+
+                    <#input id="phone" name="联系电话"  underline="true" />
+                </div>
+
+            </div>
+
+            <div class="row btn-group-m-t">
+                <div class="col-sm-10">
+                    <#button btnCss="info" name="提交" id="ensure" icon="fa-check" clickFun="LeaveInfoDlg.addSubmit()"/>
+                    <#button btnCss="info" name="查看自己的请假申请" id="ensure" icon="fa-check" clickFun="LeaveInfoDlg.showmeleave()"/>
+                    <#button btnCss="danger" name="取消" id="cancel" icon="fa-eraser" clickFun="LeaveInfoDlg.close()"/>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="${ctxPath}/static/modular/system/leave/Leave_info.js"></script>
+@}
